@@ -329,6 +329,17 @@ public class Twitter extends TwitterOAuthSupportBaseImpl
     /**
      * {@inheritDoc}
      */
+    public ResponseList<Status> getHomeTimeline(Paging paging, Boolean trimUsers) throws
+            TwitterException {
+        ensureAuthorizationEnabled();
+        return StatusJSONImpl.createStatusList(http.get(conf.getRestBaseURL()
+                + "statuses/home_timeline.json", mergeParameters(paging.asPostParameterArray(),
+                new HttpParameter[]{INCLUDE_ENTITIES, new HttpParameter("trim_user", trimUsers.toString())}), auth));
+    }
+
+    /**
+     * {@inheritDoc}
+     */
     public ResponseList<Status> getFriendsTimeline() throws
             TwitterException {
         ensureAuthorizationEnabled();
@@ -415,6 +426,20 @@ public class Twitter extends TwitterOAuthSupportBaseImpl
     /**
      * {@inheritDoc}
      */
+    public ResponseList<Status> getUserTimeline(Paging paging, Boolean trimUsers) throws
+            TwitterException {
+        ensureAuthorizationEnabled();
+        return StatusJSONImpl.createStatusList(http.get(conf.getRestBaseURL() +
+                "statuses/user_timeline.json",
+                mergeParameters(new HttpParameter[]{INCLUDE_RTS
+                        , INCLUDE_ENTITIES
+                        , new HttpParameter("trim_user", trimUsers.toString())}
+                        , paging.asPostParameterArray()), auth));
+    }
+
+    /**
+     * {@inheritDoc}
+     */
     public ResponseList<Status> getMentions() throws TwitterException {
         ensureAuthorizationEnabled();
         return StatusJSONImpl.createStatusList(http.get(conf.getRestBaseURL() +
@@ -437,6 +462,19 @@ public class Twitter extends TwitterOAuthSupportBaseImpl
     /**
      * {@inheritDoc}
      */
+    public ResponseList<Status> getMentions(Paging paging, Boolean trimUsers) throws TwitterException {
+        ensureAuthorizationEnabled();
+        return StatusJSONImpl.createStatusList(http.get(conf.getRestBaseURL()
+                + "statuses/mentions.json",
+                mergeParameters(new HttpParameter[]{INCLUDE_RTS
+                        , INCLUDE_ENTITIES
+                        , new HttpParameter("trim_user", trimUsers.toString())}
+                        , paging.asPostParameterArray()), auth));
+    }
+
+    /**
+     * {@inheritDoc}
+     */
     public ResponseList<Status> getRetweetedByMe() throws TwitterException {
         ensureAuthorizationEnabled();
         return StatusJSONImpl.createStatusList(http.get(conf.getRestBaseURL()
@@ -451,6 +489,18 @@ public class Twitter extends TwitterOAuthSupportBaseImpl
         return StatusJSONImpl.createStatusList(http.get(conf.getRestBaseURL()
                 + "statuses/retweeted_by_me.json", mergeParameters(paging.asPostParameterArray()
                 , INCLUDE_ENTITIES), auth));
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public ResponseList<Status> getRetweetedByMe(Paging paging, Boolean trimUsers) throws TwitterException {
+        ensureAuthorizationEnabled();
+        return StatusJSONImpl.createStatusList(http.get(conf.getRestBaseURL()
+                + "statuses/retweeted_by_me.json",
+                mergeParameters(new HttpParameter[]{INCLUDE_ENTITIES
+                        , new HttpParameter("trim_user", trimUsers.toString())}
+                        , paging.asPostParameterArray()), auth));
     }
 
     /**
@@ -941,6 +991,16 @@ public class Twitter extends TwitterOAuthSupportBaseImpl
         return StatusJSONImpl.createStatusList(http.get(conf.getRestBaseURL() + listOwnerId +
                 "/lists/" + id + "/statuses.json", mergeParameters(paging.asPostParameterArray(Paging.SMCP, Paging.PER_PAGE)
                 , INCLUDE_ENTITIES), auth));
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public ResponseList<Status> getUserListStatuses(int listOwnerId, int id, Paging paging, Boolean trimUsers) throws TwitterException {
+        return StatusJSONImpl.createStatusList(http.get(conf.getRestBaseURL() + listOwnerId +
+                "/lists/" + id + "/statuses.json",
+                mergeParameters(paging.asPostParameterArray(Paging.SMCP, Paging.PER_PAGE)
+                , new HttpParameter[]{INCLUDE_ENTITIES, new HttpParameter("trim_user", trimUsers.toString())}), auth));
     }
 
     /**

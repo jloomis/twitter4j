@@ -71,6 +71,21 @@ public interface TimelineMethods {
      */
     ResponseList<Status> getHomeTimeline(Paging paging) throws TwitterException;
 
+
+     /**
+     * Returns the 20 most recent statuses, including retweets, posted by the authenticating user and that user's friends. This is the equivalent of /timeline/home on the Web.<br>
+     * Usage note: This home_timeline call is identical to statuses/friends_timeline, except that home_timeline also contains retweets, while statuses/friends_timeline does not for backwards compatibility reasons. In a future version of the API, statuses/friends_timeline will be deprected and replaced by home_timeline.
+     * <br>This method calls http://api.twitter.com/1/statuses/home_timeline
+     *
+     * @param paging controls pagination. Supports since_id, max_id, count and page parameters.
+     * @param trimUsers if true, only id and id_str fields are returned for each tweet author (all other Status.User fields will be null/default)
+     * @return list of the home Timeline
+     * @throws TwitterException when Twitter service or network is unavailable
+     * @see <a href="http://dev.twitter.com/doc/get/statuses/home_timeline">GET statuses/home_timeline | dev.twitter.com</a>
+     * @since Twitter4J 2.0.10
+     */
+    ResponseList<Status> getHomeTimeline(Paging paging, Boolean trimUsers) throws TwitterException;
+
     /**
      * Returns the 20 most recent statuses posted by the authenticating user and that user's friends. This is the equivalent of /timeline/home on the Web.
      * <br>This method calls http://api.twitter.com/1/statuses/friends_timeline
@@ -178,6 +193,21 @@ public interface TimelineMethods {
     ResponseList<Status> getUserTimeline(Paging paging) throws TwitterException;
 
     /**
+     * Returns the 20 most recent statuses posted from the authenticating user. It's also possible to request another user's timeline via the id parameter.<br>
+     * This is the equivalent of the Web / page for your own user, or the profile page for a third party.<br>
+     * For backwards compatibility reasons, retweets are stripped out of the user_timeline when calling in XML or JSON (they appear with 'RT' in RSS and Atom). If you'd like them included, you can merge them in from statuses retweeted_by_me.<br>
+     * <br>This method calls http://api.twitter.com/1/statuses/user_timeline
+     *
+     * @param paging controls pagination. Supports since_id, max_id, count and page parameters.
+     * @param trimUsers if true, only id and id_str fields are returned for each tweet author (all other Status.User fields will be null/default)
+     * @return the 20 most recent statuses posted in the last 24 hours from the user
+     * @throws TwitterException when Twitter service or network is unavailable
+     * @see <a href="http://dev.twitter.com/doc/get/statuses/user_timeline">GET statuses/user_timeline | dev.twitter.com</a>
+     * @since Twitter4J 2.0.1
+     */
+    ResponseList<Status> getUserTimeline(Paging paging, Boolean trimUsers) throws TwitterException;
+
+    /**
      * Returns the 20 most recent mentions (status containing @username) for the authenticating user.
      * <br>This method calls http://api.twitter.com/1/statuses/mentions
      *
@@ -201,6 +231,19 @@ public interface TimelineMethods {
     ResponseList<Status> getMentions(Paging paging) throws TwitterException;
 
     /**
+     * Returns the 20 most recent mentions (status containing @username) for the authenticating user.
+     * <br>This method calls http://api.twitter.com/1/statuses/mentions
+     *
+     * @param paging controls pagination. Supports since_id, max_id, count and page parameters.
+     * @param trimUsers if true, only id and id_str fields are returned for each tweet author (all other Status.User fields will be null/default)
+     * @return the 20 most recent replies
+     * @throws TwitterException when Twitter service or network is unavailable
+     * @see <a href="http://dev.twitter.com/doc/get/statuses/mentions">GET statuses/mentions | dev.twitter.com</a>
+     * @since Twitter4J 2.0.1
+     */
+    ResponseList<Status> getMentions(Paging paging, Boolean trimUsers) throws TwitterException;
+
+    /**
      * Returns the 20 most recent retweets posted by the authenticating user.
      * <br>This method calls http://api.twitter.com/1/statuses/retweeted_by_me
      *
@@ -222,6 +265,19 @@ public interface TimelineMethods {
      * @since Twitter4J 2.0.10
      */
     ResponseList<Status> getRetweetedByMe(Paging paging) throws TwitterException;
+
+    /**
+     * Returns the 20 most recent retweets posted by the authenticating user.
+     * <br>This method calls http://api.twitter.com/1/statuses/retweeted_by_me
+     *
+     * @param paging controls pagination. Supports since_id, max_id, count and page parameters.
+     * @param trimUsers if true, only id and id_str fields are returned for each tweet author (all other Status.User fields will be null/default)
+     * @return the 20 most recent retweets posted by the authenticating user
+     * @throws TwitterException when Twitter service or network is unavailable
+     * @see <a href="http://dev.twitter.com/doc/get/statuses/retweeted_by_me">GET statuses/retweeted_by_me | dev.twitter.com</a>
+     * @since Twitter4J 2.0.10
+     */
+    ResponseList<Status> getRetweetedByMe(Paging paging, Boolean trimUsers) throws TwitterException;
 
     /**
      * Returns the 20 most recent retweets posted by the authenticating user's friends.
